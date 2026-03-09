@@ -31,14 +31,14 @@ export default function NotificationsPage() {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-2xl font-display font-bold text-white flex items-center gap-2">
-                        <HiOutlineBell className="w-7 h-7 text-primary-400" />
+                    <h1 className="page-title flex items-center gap-2">
+                        <HiOutlineBell className="w-7 h-7 text-primary-500" />
                         Notifications
                         {unreadCount > 0 && (
                             <span className="badge badge-primary text-sm">{unreadCount} new</span>
                         )}
                     </h1>
-                    <p className="text-slate-400 text-sm mt-1">Stay updated with your boutique activity</p>
+                    <p className="page-subtitle">Stay updated with your boutique activity</p>
                 </div>
                 {unreadCount > 0 && (
                     <button onClick={markAllAsRead} className="btn-secondary text-sm gap-1.5">
@@ -64,12 +64,13 @@ export default function NotificationsPage() {
                             {/* Content */}
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-start justify-between gap-3">
-                                    <p className={`text-sm font-medium ${notif.isRead ? 'text-slate-300' : 'text-white'}`}>
+                                    <p className={`text-sm font-medium ${notif.isRead ? '' : 'font-semibold'}`}
+                                        style={{ color: 'rgb(var(--text-primary))' }}>
                                         {notif.title}
                                     </p>
-                                    <p className="text-xs text-slate-500 shrink-0">{formatDate(notif.createdAt, 'relative')}</p>
+                                    <p className="text-xs shrink-0" style={{ color: 'rgb(var(--text-tertiary))' }}>{formatDate(notif.createdAt, 'relative')}</p>
                                 </div>
-                                <p className="text-xs text-slate-400 mt-1">{notif.message}</p>
+                                <p className="text-xs mt-1" style={{ color: 'rgb(var(--text-secondary))' }}>{notif.message}</p>
                             </div>
 
                             {/* Actions */}

@@ -28,10 +28,14 @@ app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 // ─── Rate Limiting ────────────────────────────────────
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100,
+    max: process.env.NODE_ENV === 'production' ? 300 : 2000, // generous in dev
     message: { success: false, message: 'Too many requests, please try again later.' },
+    skip: (req) => process.env.NODE_ENV === 'development' && req.path.startsWith('/api/orders'),
 });
-const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 10 });
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: process.env.NODE_ENV === 'production' ? 20 : 100,
+});
 app.use('/api', limiter);
 app.use('/api/auth', authLimiter);
 

@@ -82,8 +82,8 @@ export default function DashboardPage() {
         <div className="space-y-8 animate-fade-in">
             {/* Header */}
             <div>
-                <h1 className="text-2xl font-display font-bold text-white">Dashboard</h1>
-                <p className="text-slate-400 text-sm mt-1">Welcome back! Here's your boutique overview.</p>
+                <h1 className="page-title">Dashboard</h1>
+                <p className="page-subtitle">Welcome back! Here's your boutique overview.</p>
             </div>
 
             {/* KPI Cards */}
@@ -98,27 +98,27 @@ export default function DashboardPage() {
                 {/* Bar Chart */}
                 <div className="lg:col-span-3 card p-5">
                     <div className="flex items-center gap-2 mb-5">
-                        <HiOutlineChartBar className="w-5 h-5 text-primary-400" />
-                        <h2 className="font-display font-semibold text-white">Orders by Status</h2>
+                        <HiOutlineChartBar className="w-5 h-5 text-primary-500" />
+                        <h2 className="font-display font-semibold" style={{ color: 'rgb(var(--text-primary))' }}>Orders by Status</h2>
                     </div>
                     {loading ? (
                         <div className="skeleton h-48 w-full rounded-lg" />
                     ) : chartData.length === 0 ? (
-                        <div className="h-48 flex items-center justify-center text-slate-500 text-sm">
+                        <div className="h-48 flex items-center justify-center text-sm" style={{ color: 'rgb(var(--text-secondary))' }}>
                             No data yet — create your first order!
                         </div>
                     ) : (
                         <ResponsiveContainer width="100%" height={220}>
                             <BarChart data={chartData} style={CHART_STYLE}>
-                                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                                <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 11 }} axisLine={false} tickLine={false} />
-                                <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} axisLine={false} tickLine={false} />
+                                <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,0.15)" />
+                                <XAxis dataKey="name" tick={{ fill: 'rgb(var(--text-secondary))', fontSize: 11 }} axisLine={false} tickLine={false} />
+                                <YAxis tick={{ fill: 'rgb(var(--text-secondary))', fontSize: 11 }} axisLine={false} tickLine={false} />
                                 <Tooltip
-                                    contentStyle={{ background: '#1a1a2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12 }}
-                                    labelStyle={{ color: '#e2e8f0' }}
-                                    itemStyle={{ color: '#d946ef' }}
+                                    contentStyle={{ background: 'rgb(var(--surface))', border: '1px solid rgb(var(--border))', borderRadius: 12, color: 'rgb(var(--text-primary))' }}
+                                    labelStyle={{ color: 'rgb(var(--text-primary))' }}
+                                    itemStyle={{ color: 'rgb(var(--primary))' }}
                                 />
-                                <Bar dataKey="Orders" fill="#d946ef" radius={[6, 6, 0, 0]} />
+                                <Bar dataKey="Orders" fill="#c453f0" radius={[6, 6, 0, 0]} />
                             </BarChart>
                         </ResponsiveContainer>
                     )}
@@ -127,8 +127,8 @@ export default function DashboardPage() {
                 {/* Recent Orders */}
                 <div className="lg:col-span-2 card p-5">
                     <div className="flex items-center justify-between mb-4">
-                        <h2 className="font-display font-semibold text-white">Recent Orders</h2>
-                        <a href="/orders" className="text-xs text-primary-400 hover:text-primary-300">View all →</a>
+                        <h2 className="font-display font-semibold" style={{ color: 'rgb(var(--text-primary))' }}>Recent Orders</h2>
+                        <a href="/orders" className="text-xs text-primary-600 dark:text-primary-400 hover:underline">View all →</a>
                     </div>
 
                     {loading ? (
@@ -138,23 +138,23 @@ export default function DashboardPage() {
                             ))}
                         </div>
                     ) : recent.length === 0 ? (
-                        <p className="text-slate-500 text-sm text-center py-8">No orders yet</p>
+                        <p className="text-sm text-center py-8" style={{ color: 'rgb(var(--text-tertiary))' }}>No orders yet</p>
                     ) : (
                         <ul className="space-y-2">
                             {recent.map(order => (
                                 <li key={order._id}
-                                    className="flex items-center justify-between gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors">
+                                    className="flex items-center justify-between gap-3 p-3 rounded-xl hover:bg-[rgb(var(--surface-raised))] transition-colors">
                                     <div className="min-w-0">
-                                        <p className="text-sm font-medium text-slate-200 truncate">
+                                        <p className="text-sm font-medium truncate" style={{ color: 'rgb(var(--text-primary))' }}>
                                             {order.customer?.name || '—'}
                                         </p>
-                                        <p className="text-xs text-slate-500">
+                                        <p className="text-xs" style={{ color: 'rgb(var(--text-secondary))' }}>
                                             {order.orderNumber} · {formatDate(order.dueDate)}
                                         </p>
                                     </div>
                                     <div className="flex flex-col items-end gap-1 shrink-0">
                                         <Badge label={order.status} variant={order.status} />
-                                        <p className="text-xs text-slate-400">{formatCurrency(order.totalAmount)}</p>
+                                        <p className="text-xs" style={{ color: 'rgb(var(--text-secondary))' }}>{formatCurrency(order.totalAmount)}</p>
                                     </div>
                                 </li>
                             ))}
@@ -167,16 +167,16 @@ export default function DashboardPage() {
             <DeliveryReminderWidget />
 
             {/* AI Banner */}
-            <div className="card p-6 bg-gradient-to-r from-primary-900/40 to-purple-900/30
-                      border border-primary-500/30 flex items-center justify-between gap-4">
+            <div className="card p-5 sm:p-6 bg-gradient-to-r from-primary-50 dark:from-primary-900/40 to-purple-50 dark:to-purple-900/30
+                      border border-primary-200 dark:border-primary-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-primary-500/20 flex items-center justify-center text-2xl">✨</div>
+                    <div className="w-12 h-12 rounded-xl bg-primary-100 dark:bg-primary-500/20 flex items-center justify-center text-2xl shrink-0">✨</div>
                     <div>
-                        <h3 className="font-display font-semibold text-white">AI Design Generator</h3>
-                        <p className="text-sm text-slate-400">Generate stunning garment designs from text prompts using DALL-E 3</p>
+                        <h3 className="font-display font-semibold" style={{ color: 'rgb(var(--text-primary))' }}>AI Design Generator</h3>
+                        <p className="text-sm mt-0.5" style={{ color: 'rgb(var(--text-secondary))' }}>Generate stunning garment designs from text prompts using DALL-E 3</p>
                     </div>
                 </div>
-                <a href="/ai-design" className="btn-primary shrink-0">
+                <a href="/ai-design" className="btn-primary shrink-0 w-full sm:w-auto justify-center">
                     <HiOutlineSparkles className="w-4 h-4" /> Try AI Design
                 </a>
             </div>

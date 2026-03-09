@@ -38,8 +38,8 @@ export default function LoginForm() {
     return (
         <form onSubmit={handleSubmit} noValidate className="space-y-5">
             <div>
-                <h2 className="text-xl font-display font-bold text-white">Welcome back</h2>
-                <p className="text-slate-400 text-sm mt-1">Sign in to your StitchFlow account</p>
+                <h2 className="text-xl font-display font-bold" style={{ color: 'rgb(var(--text-primary))' }}>Welcome back</h2>
+                <p className="text-sm mt-1" style={{ color: 'rgb(var(--text-secondary))' }}>Sign in to your StitchFlow account</p>
             </div>
 
             {/* Email */}
@@ -79,9 +79,9 @@ export default function LoginForm() {
                 {loading ? 'Signing in…' : 'Sign In'}
             </button>
 
-            <p className="text-center text-sm text-slate-400">
+            <p className="text-center text-sm" style={{ color: 'rgb(var(--text-secondary))' }}>
                 Don't have an account?{' '}
-                <Link to="/signup" className="text-primary-400 hover:text-primary-300 font-medium">
+                <Link to="/signup" className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium">
                     Sign up
                 </Link>
             </p>

@@ -8,40 +8,40 @@
 /* ─── Design tokens ─────────────────────────────────────── */
 @layer base {
   :root {
-    /* Brand */
     --primary: 196 83 240;
     --primary-hover: 169 50 213;
 
-    /* Surface — light */
-    --bg: 250 250 250;
+    /* ── LIGHT THEME ── */
+    --bg: 248 248 250;
+    /* page background */
     --surface: 255 255 255;
-    --surface-raised: 248 248 250;
-    --border: 228 228 231;
+    /* card / panel    */
+    --surface-raised: 244 244 246;
+    /* hover / elevated */
+    --border: 226 226 232;
     --border-focus: 196 83 240;
 
-    /* Text */
-    --text-primary: 24 24 27;
-    --text-secondary: 113 113 122;
-    --text-tertiary: 161 161 170;
+    --text-primary: 15 15 20;
+    /* near-black — 4.5:1+ on white */
+    --text-secondary: 82 82 91;
+    /* muted body  */
+    --text-tertiary: 141 141 150;
+    /* placeholder */
 
-    /* Radius */
     --radius: 0.625rem;
-    /* 10px */
     --radius-lg: 0.875rem;
-    /* 14px */
     --radius-xl: 1.125rem;
-    /* 18px */
-
-    /* Sidebar */
     --sidebar-w: 15rem;
   }
 
+  /* ── DARK THEME ── */
   .dark {
     --bg: 9 9 11;
     --surface: 18 18 22;
     --surface-raised: 27 27 34;
     --border: 39 39 42;
     --border-focus: 196 83 240;
+
     --text-primary: 250 250 250;
     --text-secondary: 161 161 170;
     --text-tertiary: 113 113 122;
@@ -80,7 +80,6 @@
     line-height: 1.2;
   }
 
-  /* Subtle scrollbars */
   ::-webkit-scrollbar {
     width: 5px;
     height: 5px;
@@ -99,7 +98,6 @@
     background: rgb(var(--primary) / 0.6);
   }
 
-  /* Focus ring */
   :focus-visible {
     outline: 2px solid rgb(var(--primary));
     outline-offset: 2px;
@@ -109,9 +107,11 @@
 /* ─── Component classes ──────────────────────────────────── */
 @layer components {
 
-  /* ── Cards ── */
+  /* ── Cards (fully theme-aware via CSS vars) ── */
   .card {
-    @apply rounded-[var(--radius-lg)] border bg-white dark:bg-[rgb(var(--surface))] border-neutral-200 dark:border-white/5 shadow-card;
+    @apply rounded-[var(--radius-lg)] shadow-card;
+    background-color: rgb(var(--surface));
+    border: 1px solid rgb(var(--border));
   }
 
   .card-hover {
@@ -127,37 +127,55 @@
     @apply btn bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800 shadow-sm;
   }
 
-  .btn-secondary {
-    @apply btn bg-white dark:bg-white/5 border border-neutral-200 dark:border-white/10 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-white/10 hover:border-neutral-300 dark:hover:border-white/20;
-  }
-
-  .btn-ghost {
-    @apply btn text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-white/5 hover:text-neutral-900 dark:hover:text-white;
-  }
-
   .btn-destructive {
     @apply btn bg-red-600 text-white hover:bg-red-700 active:bg-red-800;
   }
 
+  .btn-secondary {
+    @apply btn border bg-white dark:bg-white/5 border-neutral-200 dark:border-white/10 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-white/10;
+  }
+
+  .btn-ghost {
+    @apply btn text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-white/5 hover:text-neutral-900 dark:hover:text-white;
+  }
+
   .btn-outline-primary {
-    @apply btn border border-primary-300 dark:border-primary-700 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-500/10;
+    @apply btn border border-primary-400 dark:border-primary-700 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-500/10;
   }
 
   /* ── Form elements ── */
   .input {
-    @apply w-full rounded-[var(--radius)] border border-neutral-200 dark:border-white/10 bg-white dark:bg-white/5 px-3.5 py-2.5 text-sm text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 dark:placeholder:text-neutral-600 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-400 dark:focus:border-primary-500;
+    @apply w-full rounded-[var(--radius)] px-3.5 py-2.5 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-primary-500/30;
+    border: 1px solid rgb(var(--border));
+    background-color: rgb(var(--surface));
+    color: rgb(var(--text-primary));
+  }
+
+  .input::placeholder {
+    color: rgb(var(--text-tertiary));
+  }
+
+  .input:focus {
+    border-color: rgb(var(--border-focus));
   }
 
   .input-error {
-    @apply input border-red-400 focus:ring-red-400/20 focus:border-red-400;
+    @apply input;
+    border-color: #f87171;
+  }
+
+  .input-error:focus {
+    border-color: #f87171;
   }
 
   .label {
-    @apply mb-1.5 block text-sm font-medium text-neutral-700 dark:text-neutral-300;
+    @apply mb-1.5 block text-sm font-medium;
+    color: rgb(var(--text-secondary));
   }
 
   .hint {
-    @apply mt-1 text-xs text-neutral-400 dark:text-neutral-500;
+    @apply mt-1 text-xs;
+    color: rgb(var(--text-tertiary));
   }
 
   .error-msg {
@@ -193,18 +211,25 @@
     @apply badge bg-neutral-100 dark:bg-white/10 text-neutral-600 dark:text-neutral-400;
   }
 
-  /* ── Nav ── */
+  /* ── Navigation ── */
   .nav-link {
-    @apply flex items-center gap-3 rounded-[var(--radius)] px-3 py-2.5 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-white/5 hover:text-neutral-900 dark:hover:text-white transition-all duration-150;
+    @apply flex items-center gap-3 rounded-[var(--radius)] px-3 py-2.5 text-sm font-medium transition-all duration-150;
+    color: rgb(var(--text-secondary));
+  }
+
+  .nav-link:hover {
+    background-color: rgb(var(--surface-raised));
+    color: rgb(var(--text-primary));
   }
 
   .nav-link-active {
     @apply nav-link bg-primary-50 dark:bg-primary-500/15 text-primary-700 dark:text-primary-300 font-semibold;
   }
 
-  /* ── Table ── */
+  /* ── Tables ── */
   .table-wrapper {
-    @apply overflow-x-auto rounded-[var(--radius-lg)] border border-neutral-200 dark:border-white/5;
+    @apply overflow-x-auto rounded-[var(--radius-lg)];
+    border: 1px solid rgb(var(--border));
   }
 
   .table {
@@ -212,28 +237,27 @@
   }
 
   .table thead {
-    @apply border-b border-neutral-200 dark:border-white/5;
+    border-bottom: 1px solid rgb(var(--border));
   }
 
   .table th {
-    @apply bg-neutral-50 dark:bg-white/[0.03] px-4 py-3 text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400;
+    @apply px-4 py-3 text-xs font-semibold uppercase tracking-wider;
+    background-color: rgb(var(--surface-raised));
+    color: rgb(var(--text-secondary));
   }
 
   .table td {
-    @apply px-4 py-3.5 border-b border-neutral-100 dark:border-white/[0.04] text-neutral-700 dark:text-neutral-300;
+    @apply px-4 py-3.5;
+    border-bottom: 1px solid rgb(var(--border) / 0.5);
+    color: rgb(var(--text-primary));
   }
 
   .table tbody tr:last-child td {
     @apply border-b-0;
   }
 
-  .table tbody tr {
-    @apply hover:bg-neutral-50 dark:hover:bg-white/[0.02] transition-colors duration-100;
-  }
-
-  /* ── Divider ── */
-  .divider {
-    @apply border-t border-neutral-200 dark:border-white/5 my-4;
+  .table tbody tr:hover {
+    background-color: rgb(var(--surface-raised));
   }
 
   /* ── Skeleton ── */
@@ -241,17 +265,25 @@
     @apply bg-gradient-to-r from-neutral-200 via-neutral-100 to-neutral-200 dark:from-white/5 dark:via-white/10 dark:to-white/5 bg-[length:400%_100%] animate-shimmer rounded-[var(--radius)];
   }
 
-  /* ── Section header ── */
+  /* ── Page headers ── */
   .section-header {
     @apply flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6;
   }
 
   .page-title {
-    @apply text-2xl font-display font-semibold text-neutral-900 dark:text-white;
+    @apply text-xl sm:text-2xl font-display font-semibold;
+    color: rgb(var(--text-primary));
   }
 
   .page-subtitle {
-    @apply text-sm text-neutral-500 dark:text-neutral-400 mt-0.5;
+    @apply text-sm mt-0.5;
+    color: rgb(var(--text-secondary));
+  }
+
+  /* ── Divider ── */
+  .divider {
+    @apply my-4;
+    border-top: 1px solid rgb(var(--border));
   }
 }
 
@@ -273,19 +305,29 @@
     text-wrap: balance;
   }
 
-  /* Glass morphism — light */
   .glass {
     @apply bg-white/70 dark:bg-black/30 backdrop-blur-md border border-white/50 dark:border-white/10;
   }
 
-  /* Gradient text */
   .text-gradient {
     @apply bg-gradient-to-r from-primary-600 to-purple-500 bg-clip-text text-transparent;
   }
 
-  /* Focus helpers */
-  .ring-focus {
-    @apply focus:ring-2 focus:ring-primary-500/40 focus:outline-none;
+  /* Semantic theme utilities — preferred over raw dark: prefix on text */
+  .t-primary {
+    color: rgb(var(--text-primary));
+  }
+
+  .t-secondary {
+    color: rgb(var(--text-secondary));
+  }
+
+  .t-tertiary {
+    color: rgb(var(--text-tertiary));
+  }
+
+  .bg-surface {
+    background-color: rgb(var(--surface));
   }
 }
 

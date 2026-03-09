@@ -68,3 +68,20 @@ exports.deleteCustomer = asyncHandler(async (req, res) => {
     if (!customer) return res.status(404).json({ success: false, message: 'Customer not found' });
     res.json({ success: true, message: 'Customer deleted' });
 });
+
+// @desc    Search customers by name / phone / email
+// @route   GET /api/customers/search?q=term
+// @access  Private
+exports.searchCustomers = asyncHandler(async (req, res) => {
+    const q = req.query.q?.trim();
+    if (!q) return res.status(400).json({ success: false, message: 'Query parameter q is required' });
+
+    const regex = new RegExp(q, 'i');
+    const customers = await Customer.find({
+        user: req.user._id,
+        isActive: true,
+        $or: [{ name: regex }, { phone: regex }, { email: regex }],
+    }).limit(10).sort({ name: 1 });
+
+    res.json({ success: true, data: { customers } });
+});

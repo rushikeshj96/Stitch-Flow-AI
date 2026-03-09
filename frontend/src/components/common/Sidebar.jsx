@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import {
     HiOutlineHome, HiOutlineUsers, HiOutlineShoppingBag,
@@ -21,12 +21,12 @@ export default function Sidebar({ onCollapse }) {
     const [collapsed, setCollapsed] = useState(false);
     const { unreadCount } = useNotifications();
 
-    const toggle = () => {
-        setCollapsed(c => {
-            onCollapse?.(!c);
-            return !c;
-        });
-    };
+    const toggle = () => setCollapsed(c => !c);
+
+    // Notify parent AFTER state has been committed — safe, avoids setState-in-render
+    useEffect(() => {
+        onCollapse?.(collapsed);
+    }, [collapsed]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <aside
