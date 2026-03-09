@@ -1,0 +1,62 @@
+const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+const compression = require('compression');
+const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
+
+const authRoutes = require('./routes/authRoutes');
+const customerRoutes = require('./routes/customerRoutes');
+const orderRoutes = require('./routes/orderRoutes');
+const measurementRoutes = require('./routes/measurementRoutes');
+const aiRoutes = require('./routes/aiRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
+const errorHandler = require('./middleware/errorHandler');
+const notFound = require('./middleware/notFound');
+
+const app = express();
+
+// ─── Security & Utilities ────────────────────────────
+app.use(helmet());
+app.use(compression());
+app.use(cors({
+    origin: process.env.CLIENT_URL || 'http://localhost:3000',
+    credentials: true,
+}));
+app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
+
+// ─── Rate Limiting ────────────────────────────────────
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100,
+    message: { success: false, message: 'Too many requests, please try again later.' },
+});
+const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 10 });
+app.use('/api', limiter);
+app.use('/api/auth', authLimiter);
+
+// ─── Body Parsing ─────────────────────────────────────
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// ─── Static Files ─────────────────────────────────────
+app.use('/uploads', express.static('uploads'));
+
+// ─── Health Check ─────────────────────────────────────
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok', timestamp: new Date().toISOString(), app: 'StitchFlow AI' });
+});
+
+// ─── API Routes ───────────────────────────────────────
+app.use('/api/auth', authRoutes);
+app.use('/api/customers', customerRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/measurements', measurementRoutes);
+app.use('/api/ai', aiRoutes);
+app.use('/api/notifications', notificationRoutes);
+
+// ─── Error Handling ──────────────────────────────────
+app.use(notFound);
+app.use(errorHandler);
+
+module.exports = app;
