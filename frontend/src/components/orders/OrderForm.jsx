@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { HiOutlinePlus, HiOutlineTrash } from 'react-icons/hi';
 import { customerService } from '../../services/customerService.js';
 import { useSearch } from '../../hooks/useSearch.js';
+import toast from 'react-hot-toast';
 
 const EMPTY_ITEM = { garmentType: '', description: '', quantity: 1, unitPrice: '', fabric: '' };
 
@@ -33,7 +34,13 @@ export default function OrderForm({ onSubmit, onCancel, loading }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!customerId) { alert('Please select a customer'); return; }
+        // BUG-06 fix: use toast instead of native alert()
+        if (!customerId) { toast.error('Please select a customer'); return; }
+        // BUG-02 frontend fix: validate advance paid <= total
+        if (Number(advancePaid) > totalAmount) {
+            toast.error('Advance paid cannot exceed total amount (₹' + totalAmount.toLocaleString('en-IN') + ')');
+            return;
+        }
         onSubmit({
             customer: customerId,
             items: items.map(it => ({ ...it, quantity: Number(it.quantity), unitPrice: Number(it.unitPrice) })),
@@ -61,13 +68,13 @@ export default function OrderForm({ onSubmit, onCancel, loading }) {
                         className="absolute right-3 top-9 text-slate-500 hover:text-white text-sm">✕</button>
                 )}
                 {showDropdown && !customerId && customers.length > 0 && (
-                    <ul className="absolute z-20 top-full mt-1 w-full bg-surface-elevated border border-white/10
-                         rounded-xl shadow-2xl overflow-hidden">
+                    // BUG-14 fix: use theme-aware card class instead of dark-only classes
+                    <ul className="absolute z-20 top-full mt-1 w-full card rounded-xl shadow-2xl overflow-hidden">
                         {customers.map(c => (
                             <li key={c._id}
-                                className="px-4 py-2.5 hover:bg-white/5 cursor-pointer text-sm text-slate-200"
+                                className="px-4 py-2.5 hover:bg-neutral-100 dark:hover:bg-white/5 cursor-pointer text-sm"
                                 onClick={() => { setCustomerId(c._id); setCustomerName(c.name); setShowDropdown(false); }}>
-                                <span className="font-medium">{c.name}</span>
+                                <span className="font-medium text-neutral-800 dark:text-slate-200">{c.name}</span>
                                 <span className="text-slate-500 ml-2">{c.phone}</span>
                             </li>
                         ))}

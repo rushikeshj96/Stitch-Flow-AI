@@ -24,7 +24,7 @@ export default function LoginForm() {
     const validate = () => {
         const errs = {};
         if (!validateEmail(form.email)) errs.email = 'Enter a valid email';
-        if (form.password.length < 6) errs.password = 'Password too short';
+        if (!form.password) errs.password = 'Password is required';
         setErrors(errs);
         return Object.keys(errs).length === 0;
     };

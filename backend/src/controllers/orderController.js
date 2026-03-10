@@ -41,6 +41,11 @@ exports.getOrder = asyncHandler(async (req, res) => {
 // @route   POST /api/orders
 // @access  Private
 exports.createOrder = asyncHandler(async (req, res) => {
+    const { totalAmount, advancePaid } = req.body;
+    // BUG-02 fix: Validate advance paid cannot exceed total
+    if (advancePaid && Number(advancePaid) > Number(totalAmount)) {
+        return res.status(400).json({ success: false, message: 'Advance paid cannot exceed total amount' });
+    }
     const order = await Order.create({ ...req.body, user: req.user._id });
     // Update customer stats
     await Customer.findByIdAndUpdate(order.customer, { $inc: { totalOrders: 1, totalSpent: order.totalAmount } });
@@ -84,6 +89,10 @@ exports.updateStatus = asyncHandler(async (req, res) => {
 exports.deleteOrder = asyncHandler(async (req, res) => {
     const order = await Order.findOneAndDelete({ _id: req.params.id, user: req.user._id });
     if (!order) return res.status(404).json({ success: false, message: 'Order not found' });
+    // BUG-07 fix: Decrement customer stats when order is deleted
+    await Customer.findByIdAndUpdate(order.customer, {
+        $inc: { totalOrders: -1, totalSpent: -order.totalAmount },
+    });
     res.json({ success: true, message: 'Order deleted' });
 });
 

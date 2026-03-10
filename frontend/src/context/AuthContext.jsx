@@ -9,15 +9,33 @@ export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // Restore session from localStorage on mount
+    // Restore session from localStorage on mount, then refresh from server
     useEffect(() => {
         const storedUser = localStorage.getItem('sf_user');
         const storedToken = localStorage.getItem('sf_token');
         if (storedUser && storedToken) {
             setUser(JSON.parse(storedUser));
             setAuthToken(storedToken);
+            // BUG-13 fix: Refresh user data from server to avoid stale localStorage
+            authService.getProfile()
+                .then(res => {
+                    const freshUser = res.data?.data?.user;
+                    if (freshUser) {
+                        setUser(freshUser);
+                        localStorage.setItem('sf_user', JSON.stringify(freshUser));
+                    }
+                })
+                .catch(() => {
+                    // Token invalid – clear session (interceptor also handles 401)
+                    localStorage.removeItem('sf_user');
+                    localStorage.removeItem('sf_token');
+                    setAuthToken(null);
+                    setUser(null);
+                })
+                .finally(() => setLoading(false));
+        } else {
+            setLoading(false);
         }
-        setLoading(false);
     }, []);
 
     const login = useCallback(async (credentials) => {

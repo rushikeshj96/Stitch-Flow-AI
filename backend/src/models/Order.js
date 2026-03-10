@@ -30,6 +30,12 @@ const orderSchema = new mongoose.Schema({
         changedAt: { type: Date, default: Date.now },
         changedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     }],
+    // ── Receipt & Payment ──
+    receiptNumber: { type: String },
+    receiptUrl: { type: String },
+    paymentStatus: { type: String, enum: ['pending', 'partial', 'paid'], default: 'pending' },
+    whatsappSent: { type: Boolean, default: false },
+    whatsappSentAt: { type: Date },
 }, { timestamps: true });
 
 // Auto-generate order number

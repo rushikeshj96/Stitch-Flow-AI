@@ -118,6 +118,13 @@
     @apply card transition-shadow duration-200 hover:shadow-card-hover;
   }
 
+  /* ── Elevated card (slight inset / deeper background) ── */
+  .card-elevated {
+    @apply rounded-[var(--radius-lg)] shadow-sm;
+    background-color: rgb(var(--surface-raised));
+    border: 1px solid rgb(var(--border));
+  }
+
   /* ── Buttons ── */
   .btn {
     @apply inline-flex items-center justify-center gap-2 rounded-[var(--radius)] px-4 py-2.5 text-sm font-medium transition-all duration-150 focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none select-none;

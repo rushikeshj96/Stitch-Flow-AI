@@ -4,7 +4,7 @@ const { body } = require('express-validator');
 const validate = require('../middleware/validate');
 const { protect } = require('../middleware/authMiddleware');
 const {
-    signup, login, getProfile, updateProfile, changePassword,
+    signup, login, getProfile, updateProfile, changePassword, forgotPassword, resetPassword,
 } = require('../controllers/authController');
 
 // Public
@@ -28,6 +28,9 @@ router.post('/login',
     validate,
     login
 );
+
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password', resetPassword);
 
 // Protected
 router.use(protect);

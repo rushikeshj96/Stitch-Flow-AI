@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { HiOutlinePlus, HiOutlineSearch, HiOutlineRefresh } from 'react-icons/hi';
 
 import { customerService } from '../services/customerService.js';
@@ -15,6 +15,8 @@ export default function CustomersPage() {
     const [customers, setCustomers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
+    // BUG-08 fix: debounced search — only fires API call after 400ms of no typing
+    const [debouncedSearch, setDebouncedSearch] = useState('');
     const [formOpen, setFormOpen] = useState(false);
     const [editTarget, setEditTarget] = useState(null);
     const [deleteTarget, setDeleteTarget] = useState(null);
@@ -23,15 +25,21 @@ export default function CustomersPage() {
 
     const { page, total, setTotal, nextPage, prevPage, totalPages } = usePagination(12);
 
+    // Debounce: update debouncedSearch 400ms after search changes
+    useEffect(() => {
+        const timer = setTimeout(() => setDebouncedSearch(search), 400);
+        return () => clearTimeout(timer);
+    }, [search]);
+
     const fetchCustomers = useCallback(async () => {
         setLoading(true);
         try {
-            const { data } = await customerService.getAll({ page, q: search || undefined });
+            const { data } = await customerService.getAll({ page, q: debouncedSearch || undefined });
             setCustomers(data.data.customers);
             setTotal(data.data.pagination.total);
         } catch { /* interceptor handles */ }
         finally { setLoading(false); }
-    }, [page, search]);
+    }, [page, debouncedSearch]);
 
     useEffect(() => { fetchCustomers(); }, [fetchCustomers]);
 

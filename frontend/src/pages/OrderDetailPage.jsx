@@ -5,6 +5,7 @@ import { orderService } from '../services/orderService.js';
 import Badge from '../components/common/Badge.jsx';
 import Modal from '../components/common/Modal.jsx';
 import LoadingSpinner from '../components/common/LoadingSpinner.jsx';
+import ReceiptActions from '../components/orders/ReceiptActions.jsx';
 import { formatDate, formatCurrency, getInitials, avatarColor } from '../utils/helpers.js';
 import toast from 'react-hot-toast';
 
@@ -92,10 +93,10 @@ export default function OrderDetailPage() {
                                                 <p className="font-medium text-slate-700 dark:text-slate-200">{item.garmentType}</p>
                                                 {item.description && <p className="text-xs text-slate-500">{item.description}</p>}
                                             </td>
-                                            <td className="text-slate-400">{item.fabric || '—'}</td>
-                                            <td className="text-slate-300">{item.quantity}</td>
-                                            <td className="text-slate-300">{formatCurrency(item.unitPrice)}</td>
-                                            <td className="text-white font-medium">{formatCurrency(item.quantity * item.unitPrice)}</td>
+                                            <td className="text-neutral-500 dark:text-slate-400">{item.fabric || '—'}</td>
+                                            <td className="text-neutral-600 dark:text-slate-300">{item.quantity}</td>
+                                            <td className="text-neutral-600 dark:text-slate-300">{formatCurrency(item.unitPrice)}</td>
+                                            <td className="text-neutral-800 dark:text-white font-medium">{formatCurrency(item.quantity * item.unitPrice)}</td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -174,7 +175,8 @@ export default function OrderDetailPage() {
                             ].map(([label, value, cls]) => (
                                 <div key={label} className="flex justify-between">
                                     <span className="text-slate-400">{label}</span>
-                                    <span className={cls + ' font-medium'}>{value}</span>
+                                    {/* BUG-05 fix: text-white replaced with theme-aware class */}
+                                    <span className={(cls === 'text-white' ? 'text-neutral-800 dark:text-white' : cls) + ' font-medium'}>{value}</span>
                                 </div>
                             ))}
                         </div>
@@ -187,6 +189,13 @@ export default function OrderDetailPage() {
                             <p className="text-slate-400 text-sm">{order.notes}</p>
                         </div>
                     )}
+
+                    {/* Receipt & Payment Actions */}
+                    <ReceiptActions
+                        orderId={id}
+                        order={order}
+                        onRefresh={fetchOrder}
+                    />
                 </div>
             </div>
 
@@ -194,10 +203,12 @@ export default function OrderDetailPage() {
             <Modal isOpen={statusOpen} onClose={() => setStatusOpen(false)} title="Update Order Status" size="sm">
                 <div className="space-y-2 py-2">
                     {STATUSES.map(s => (
+                        // BUG-10 fix: disable button if it's the already-current status
                         <button key={s} onClick={() => handleStatus(s)}
+                            disabled={order.status === s}
                             className={`w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all
                       ${order.status === s
-                                    ? 'bg-primary-500/30 text-primary-300 border border-primary-500/40'
+                                    ? 'bg-primary-500/30 text-primary-300 border border-primary-500/40 opacity-60 cursor-not-allowed'
                                     : 'bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white border border-transparent'
                                 }`}>
                             <Badge label={s} variant={s} />

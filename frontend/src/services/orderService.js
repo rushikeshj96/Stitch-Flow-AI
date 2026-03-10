@@ -8,4 +8,9 @@ export const orderService = {
     delete: (id) => apiClient.delete(`/orders/${id}`),
     updateStatus: (id, status) => apiClient.patch(`/orders/${id}/status`, { status }),
     getStats: () => apiClient.get('/orders/stats'),
+    // ── Receipt & WhatsApp ──
+    getReceipt: (id) => apiClient.get(`/orders/${id}/receipt`),
+    generateReceipt: (id) => apiClient.post(`/orders/${id}/generate-receipt`),
+    sendWhatsApp: (id) => apiClient.post(`/orders/${id}/send-receipt`),
+    markPaid: (id) => apiClient.patch(`/orders/${id}/mark-paid`),
 };

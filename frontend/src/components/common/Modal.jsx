@@ -32,7 +32,7 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md', f
                        flex flex-col max-h-[90vh] shadow-2xl`}>
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
-                    <h2 className="text-lg font-display font-semibold text-white">{title}</h2>
+                    <h2 className="text-lg font-display font-semibold text-dark dark:text-white">{title}</h2>
                     <button id="modal-close" onClick={onClose}
                         className="btn-ghost p-1.5 text-slate-400 hover:text-white rounded-lg">
                         <HiOutlineX className="w-5 h-5" />

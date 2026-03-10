@@ -82,7 +82,7 @@ export default function CustomerDetailPage() {
                     {getInitials(customer.name)}
                 </div>
                 <div className="flex-1 min-w-0">
-                    <h1 className="text-2xl font-display font-bold text-white">{customer.name}</h1>
+                    <h1 className="text-2xl font-display font-bold text-neutral-800 dark:text-white">{customer.name}</h1>
                     <div className="flex flex-wrap gap-4 mt-2 text-sm text-slate-400">
                         <span className="flex items-center gap-1.5"><HiOutlinePhone className="w-4 h-4" /> {customer.phone}</span>
                         {customer.email && <span className="flex items-center gap-1.5"><HiOutlineMail className="w-4 h-4" /> {customer.email}</span>}
@@ -100,12 +100,12 @@ export default function CustomerDetailPage() {
                     )}
                 </div>
                 <div className="grid grid-cols-2 gap-4 text-center shrink-0">
-                    <div className="card-elevated px-5 py-3">
-                        <p className="text-2xl font-display font-bold text-white">{customer.totalOrders}</p>
+                    <div className="card px-5 py-3">
+                        <p className="text-2xl font-display font-bold text-neutral-800 dark:text-white">{customer.totalOrders}</p>
                         <p className="text-xs text-slate-400 mt-0.5">Orders</p>
                     </div>
-                    <div className="card-elevated px-5 py-3">
-                        <p className="text-2xl font-display font-bold text-white">{formatCurrency(customer.totalSpent)}</p>
+                    <div className="card px-5 py-3">
+                        <p className="text-2xl font-display font-bold text-neutral-800 dark:text-white">{formatCurrency(customer.totalSpent)}</p>
                         <p className="text-xs text-slate-400 mt-0.5">Spent</p>
                     </div>
                 </div>
@@ -115,7 +115,7 @@ export default function CustomerDetailPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Order History */}
                 <div className="card p-5">
-                    <h2 className="font-display font-semibold text-white mb-4">Order History</h2>
+                    <h2 className="font-display font-semibold text-neutral-700 dark:text-white mb-4">Order History</h2>
                     {orders.length === 0 ? (
                         <p className="text-slate-500 text-sm text-center py-8">No orders yet</p>
                     ) : (
@@ -142,7 +142,7 @@ export default function CustomerDetailPage() {
                 {/* Measurements */}
                 <div className="card p-5">
                     <div className="flex items-center justify-between mb-4">
-                        <h2 className="font-display font-semibold text-white">Measurements</h2>
+                        <h2 className="font-display font-semibold text-neutral-700 dark:text-white">Measurements</h2>
                         <button className="btn-primary text-xs py-1.5 px-3" onClick={() => setMOpen(true)}>+ Add</button>
                     </div>
                     {measurements.length === 0 ? (
@@ -150,18 +150,18 @@ export default function CustomerDetailPage() {
                     ) : (
                         <div className="space-y-3">
                             {measurements.map(m => (
-                                <div key={m._id} className="card-elevated p-4">
+                                <div key={m._id} className="card p-4">
                                     <div className="flex items-center justify-between">
-                                        <p className="font-medium text-white text-sm">{m.label}</p>
+                                        <p className="font-medium text-neutral-700 dark:text-white text-sm">{m.label}</p>
                                         <p className="text-xs text-slate-500">{m.unit} · {formatDate(m.createdAt)}</p>
                                     </div>
                                     <div className="grid grid-cols-3 gap-2 mt-3 text-xs">
                                         {[['Chest', m.chest], ['Waist', m.waist], ['Hips', m.hips],
                                         ['Shoulder', m.shoulder], ['Length', m.length], ['Sleeve', m.sleeveLength]]
                                             .filter(([, v]) => v).map(([lbl, val]) => (
-                                                <div key={lbl} className="bg-white/5 rounded-lg p-2 text-center">
+                                                <div key={lbl} className="bg-neutral-100 dark:bg-white/5 rounded-lg p-2 text-center">
                                                     <p className="text-slate-400">{lbl}</p>
-                                                    <p className="text-white font-medium">{val}″</p>
+                                                    <p className="text-neutral-800 dark:text-white font-medium">{val}″</p>
                                                 </div>
                                             ))}
                                     </div>

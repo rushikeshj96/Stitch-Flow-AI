@@ -88,16 +88,16 @@ export default function MeasurementsPage() {
                         <div key={m._id} className="card p-5">
                             <div className="flex items-center justify-between mb-4">
                                 <div>
-                                    <p className="font-semibold text-white">{m.label}</p>
+                                    <p className="font-semibold text-neutral-700 dark:text-white">{m.label}</p>
                                     <p className="text-xs text-slate-500 mt-0.5">{m.unit} · {formatDate(m.createdAt)}</p>
                                 </div>
                                 {m.notes && <p className="text-xs text-slate-500 italic max-w-xs text-right">{m.notes}</p>}
                             </div>
                             <div className="grid grid-cols-3 gap-2">
                                 {MEASURE_FIELDS.filter(([, k]) => m[k]).map(([label, key]) => (
-                                    <div key={key} className="bg-white/5 rounded-xl p-3 text-center">
+                                    <div key={key} className="bg-neutral-100 dark:bg-white/5 rounded-xl p-3 text-center">
                                         <p className="text-xs text-slate-500">{label}</p>
-                                        <p className="text-white font-semibold">{m[key]}{m.unit === 'inch' ? '″' : 'cm'}</p>
+                                        <p className="text-neutral-800 dark:text-white font-semibold">{m[key]}{m.unit === 'inch' ? '″' : 'cm'}</p>
                                     </div>
                                 ))}
                             </div>
