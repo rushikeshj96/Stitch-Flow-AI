@@ -17,8 +17,8 @@ export function useSearch(searchFn, delay = 400) {
         timerRef.current = setTimeout(async () => {
             setLoading(true);
             try {
-                const { data } = await searchFn(query);
-                setResults(data);
+                const result = await searchFn(query);
+                setResults(result || []);
             } catch { setResults([]); }
             finally { setLoading(false); }
         }, delay);
