@@ -56,7 +56,7 @@ export default function OrderDetailPage() {
             <div className="card p-6 flex flex-col sm:flex-row sm:items-center gap-5">
                 <div>
                     <div className="flex items-center gap-3 flex-wrap">
-                        <h1 className="text-2xl font-display font-bold text-white">{order.orderNumber}</h1>
+                        <h1 className="text-2xl font-display font-bold text-neutral-700 dark:text-neutral-200">{order.orderNumber}</h1>
                         <Badge label={order.status} variant={order.status} />
                         <Badge label={order.priority} variant={order.priority === 'urgent' ? 'danger' : order.priority === 'high' ? 'warning' : 'info'} />
                     </div>
@@ -65,7 +65,7 @@ export default function OrderDetailPage() {
                 <div className="sm:ml-auto flex gap-4">
                     <div className="text-right">
                         <p className="text-sm text-slate-400">Total</p>
-                        <p className="text-xl font-display font-bold text-white">{formatCurrency(order.totalAmount)}</p>
+                        <p className="text-xl font-display font-bold text-neutral-700 dark:text-neutral-200">{formatCurrency(order.totalAmount)}</p>
                     </div>
                     <div className="text-right">
                         <p className="text-sm text-slate-400">Balance Due</p>
@@ -81,7 +81,7 @@ export default function OrderDetailPage() {
                 <div className="lg:col-span-2 space-y-5">
                     {/* Items */}
                     <div className="card p-5">
-                        <h2 className="font-display font-semibold text-white mb-4">Order Items</h2>
+                        <h2 className="font-display font-semibold text-neutral-700 dark:text-neutral-200 mb-4">Order Items</h2>
                         <div className="table-wrapper">
                             <table className="table">
                                 <thead><tr><th>Garment</th><th>Fabric</th><th>Qty</th><th>Unit Price</th><th>Subtotal</th></tr></thead>
@@ -89,7 +89,7 @@ export default function OrderDetailPage() {
                                     {order.items.map((item, i) => (
                                         <tr key={i}>
                                             <td>
-                                                <p className="font-medium text-slate-200">{item.garmentType}</p>
+                                                <p className="font-medium text-slate-700 dark:text-slate-200">{item.garmentType}</p>
                                                 {item.description && <p className="text-xs text-slate-500">{item.description}</p>}
                                             </td>
                                             <td className="text-slate-400">{item.fabric || '—'}</td>
@@ -106,7 +106,7 @@ export default function OrderDetailPage() {
                     {/* Status History */}
                     {order.statusHistory?.length > 0 && (
                         <div className="card p-5">
-                            <h2 className="font-display font-semibold text-white mb-4 flex items-center gap-2">
+                            <h2 className="font-display font-semibold text-neutral-700 dark:text-neutral-200 mb-4 flex items-center gap-2">
                                 <HiOutlineClock className="w-5 h-5 text-primary-400" /> Status Timeline
                             </h2>
                             <div className="space-y-3">
@@ -126,7 +126,7 @@ export default function OrderDetailPage() {
                 <div className="space-y-5">
                     {/* Customer */}
                     <div className="card p-5">
-                        <h2 className="font-display font-semibold text-white mb-4">Customer</h2>
+                        <h2 className="font-display font-semibold text-neutral-700 dark:text-neutral-200 mb-4">Customer</h2>
                         {order.customer ? (
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm"
@@ -146,7 +146,7 @@ export default function OrderDetailPage() {
 
                     {/* Due Date */}
                     <div className="card p-5">
-                        <h2 className="font-display font-semibold text-white mb-3">Delivery</h2>
+                        <h2 className="font-display font-semibold text-neutral-700 dark:text-neutral-200 mb-3">Delivery</h2>
                         <div className="space-y-2 text-sm">
                             <div className="flex justify-between">
                                 <span className="text-slate-400">Due Date</span>
@@ -165,7 +165,7 @@ export default function OrderDetailPage() {
 
                     {/* Payment */}
                     <div className="card p-5">
-                        <h2 className="font-display font-semibold text-white mb-3">Payment</h2>
+                        <h2 className="font-display font-semibold text-neutral-700 dark:text-neutral-200 mb-3">Payment</h2>
                         <div className="space-y-2 text-sm">
                             {[
                                 ['Total Amount', formatCurrency(order.totalAmount), 'text-white'],
@@ -183,7 +183,7 @@ export default function OrderDetailPage() {
                     {/* Notes */}
                     {order.notes && (
                         <div className="card p-5">
-                            <h2 className="font-display font-semibold text-white mb-2">Notes</h2>
+                            <h2 className="font-display font-semibold text-neutral-700 dark:text-neutral-200 mb-2">Notes</h2>
                             <p className="text-slate-400 text-sm">{order.notes}</p>
                         </div>
                     )}

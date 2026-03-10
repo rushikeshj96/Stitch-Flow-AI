@@ -72,7 +72,7 @@ export default function OrdersPage() {
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-display font-bold text-white">Orders</h1>
+                    <h1 className="page-title">Orders</h1>
                     <p className="text-slate-400 text-sm">{total} total orders</p>
                 </div>
                 <button id="add-order-btn" className="btn-primary" onClick={() => setFormOpen(true)}>
@@ -87,8 +87,8 @@ export default function OrdersPage() {
                         onClick={() => setStatusFilter(s)}
                         className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors
                     ${statusFilter === s
-                                ? 'bg-primary-500/30 text-primary-300 border border-primary-500/40'
-                                : 'bg-white/5 text-slate-400 hover:text-white border border-white/5'
+                                ? 'bg-primary-500/30 text-primary-600 border border-primary-500/40'
+                                : 'bg-white/5 text-slate-400 hover:text-white border border-neutral-200 dark:border-white/5'
                             }`}>
                         {s || 'All'}
                     </button>

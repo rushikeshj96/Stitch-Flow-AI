@@ -50,13 +50,13 @@ export default function OrderTable({ orders, onStatusChange, onDelete }) {
                                             style={{ backgroundColor: avatarColor(order.customer?.name) }}>
                                             {getInitials(order.customer?.name)}
                                         </div>
-                                        <span className="text-slate-200">{order.customer?.name || '—'}</span>
+                                        <span className="text-dark dark:text-white">{order.customer?.name || '—'}</span>
                                     </div>
                                 </td>
 
                                 {/* Due Date */}
                                 <td>
-                                    <span className={pastDue ? 'text-red-400 font-medium' : 'text-slate-300'}>
+                                    <span className={pastDue ? 'text-white font-medium' : 'text-dark'}>
                                         {formatDate(order.dueDate)}
                                         {pastDue && ' ⚠️'}
                                     </span>
@@ -65,7 +65,7 @@ export default function OrderTable({ orders, onStatusChange, onDelete }) {
                                 {/* Amount */}
                                 <td>
                                     <div>
-                                        <p className="text-slate-200">{formatCurrency(order.totalAmount)}</p>
+                                        <p className="text-dark dark:text-white">{formatCurrency(order.totalAmount)}</p>
                                         {order.balanceDue > 0 && (
                                             <p className="text-xs text-amber-400">Due: {formatCurrency(order.balanceDue)}</p>
                                         )}

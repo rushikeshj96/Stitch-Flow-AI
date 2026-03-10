@@ -41,8 +41,8 @@ export default function ProfilePage() {
     return (
         <div className="space-y-6 max-w-2xl animate-fade-in">
             <div>
-                <h1 className="text-2xl font-display font-bold text-white flex items-center gap-2">
-                    <HiOutlineUser className="w-7 h-7 text-primary-400" /> Profile
+                <h1 className="page-title">
+                    Profile
                 </h1>
                 <p className="text-slate-400 text-sm mt-1">Manage your account and boutique settings</p>
             </div>
@@ -54,7 +54,7 @@ export default function ProfilePage() {
                     {getInitials(user?.name)}
                 </div>
                 <div>
-                    <p className="text-lg font-display font-semibold text-white">{user?.name}</p>
+                    <p className="text-lg font-display font-semibold page-title">{user?.name}</p>
                     <p className="text-sm text-slate-400">{user?.email}</p>
                     <p className="text-xs text-slate-600 mt-1">
                         Member since {formatDate(user?.createdAt)} · Role: <span className="text-primary-400 capitalize">{user?.role}</span>
@@ -68,7 +68,7 @@ export default function ProfilePage() {
             {/* Edit Profile Form */}
             {editMode && (
                 <form onSubmit={handleProfileSave} className="card p-5 space-y-4 animate-slide-up">
-                    <h2 className="font-display font-semibold text-white">Edit Profile</h2>
+                    <h2 className="font-display font-semibold text-dark dark:text-neutral-200">Edit Profile</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label className="label">Full Name</label>
@@ -97,8 +97,8 @@ export default function ProfilePage() {
 
             {/* Change Password */}
             <form onSubmit={handlePasswordChange} className="card p-5 space-y-4">
-                <h2 className="font-display font-semibold text-white flex items-center gap-2">
-                    <HiOutlineLockClosed className="w-5 h-5 text-primary-400" /> Change Password
+                <h2 className="font-display font-semibold text-neutral-700 dark:text-neutral-200 flex items-center gap-2">
+                    Change Password
                 </h2>
                 <div className="grid grid-cols-1 gap-3">
                     {[

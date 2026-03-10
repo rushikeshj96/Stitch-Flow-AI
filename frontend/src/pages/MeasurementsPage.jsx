@@ -53,7 +53,7 @@ export default function MeasurementsPage() {
         <div className="space-y-6 animate-fade-in">
             <div className="flex items-center justify-between flex-wrap gap-4">
                 <div>
-                    <h1 className="text-2xl font-display font-bold text-white">Measurements</h1>
+                    <h1 className="page-title">Measurements</h1>
                     <p className="text-slate-400 text-sm mt-1">Customer body measurements for garment fitting</p>
                 </div>
                 <button className="btn-primary" disabled={!selected} onClick={() => setFormOpen(true)}>

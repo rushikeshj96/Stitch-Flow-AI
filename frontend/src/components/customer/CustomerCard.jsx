@@ -17,7 +17,7 @@ export default function CustomerCard({ customer, onEdit, onDelete }) {
                 </div>
                 <div className="min-w-0">
                     <Link to={`/customers/${customer._id}`}
-                        className="font-semibold text-white hover:text-primary-400 transition-colors truncate block">
+                        className="font-semibold text-neutral-700 dark:text-neutral-200 hover:text-primary-400 transition-colors truncate block">
                         {customer.name}
                     </Link>
                     <p className="text-xs text-slate-500 capitalize">
@@ -48,7 +48,7 @@ export default function CustomerCard({ customer, onEdit, onDelete }) {
             {customer.tags?.length > 0 && (
                 <div className="flex flex-wrap gap-1.5">
                     {customer.tags.map(tag => (
-                        <span key={tag} className="badge bg-primary-500/15 text-primary-300 text-xs">{tag}</span>
+                        <span key={tag} className="badge bg-primary-500/15 text-primary-600 text-xs">{tag}</span>
                     ))}
                 </div>
             )}

@@ -1,4 +1,5 @@
 const Customer = require('../models/Customer');
+const Order = require('../models/Order');
 const asyncHandler = require('../utils/asyncHandler');
 
 // @desc    Get all customers (with pagination & search)
@@ -84,4 +85,12 @@ exports.searchCustomers = asyncHandler(async (req, res) => {
     }).limit(10).sort({ name: 1 });
 
     res.json({ success: true, data: { customers } });
+});
+
+// @desc    Get customer orders
+// @route   GET /api/customers/:id/orders
+// @access  Private
+exports.getCustomerOrders = asyncHandler(async (req, res) => {
+    const orders = await Order.find({ customer: req.params.id, user: req.user._id }).sort({ createdAt: -1 });
+    res.json({ success: true, data: { orders } });
 });
