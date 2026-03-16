@@ -6,28 +6,29 @@ const measurementSchema = new mongoose.Schema({
     label: { type: String, default: 'Standard Measurements' },
 
     // Upper body
-    chest: Number,
-    waist: Number,
-    hips: Number,
-    shoulder: Number,
-    sleeveLength: Number,
-    armhole: Number,
-    chest_around: Number,
+    chest: String,
+    waist: String,
+    hips: String,
+    shoulder: String,
+    sleeveLength: String,
+    armhole: String,
+    chest_around: String,
 
     // Lower body
-    length: Number,
-    inseam: Number,
-    thigh: Number,
-    knee: Number,
-    ankle: Number,
+    length: String,
+    inseam: String,
+    thigh: String,
+    knee: String,
+    ankle: String,
 
     // Kurta / Salwar
-    kurta_length: Number,
-    salwar_length: Number,
-    neck: Number,
+    kurta_length: String,
+    salwar_length: String,
+    neck: String,
 
     unit: { type: String, enum: ['inch', 'cm'], default: 'inch' },
     notes: String,
+    measurementSource: { type: String, enum: ['MANUAL', 'AI_IMAGE'], default: 'MANUAL' }
 }, { timestamps: true });
 
 measurementSchema.index({ customer: 1 });

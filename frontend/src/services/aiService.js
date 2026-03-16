@@ -27,6 +27,15 @@ export const aiService = {
         apiClient.post('/ai/measurements', { measurements }),
 
     /**
+     * POST /api/ai/analyze-measurement-image
+     * Predict body measurements from a full body image
+     */
+    analyzeMeasurementImage: (formData) =>
+        apiClient.post('/ai/analyze-measurement-image', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+        }),
+
+    /**
      * POST /api/ai/suggestions
      * Get 3 personalised fashion recommendations.
      */

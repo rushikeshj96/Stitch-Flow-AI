@@ -185,6 +185,63 @@ const predictMeasurements = async (knownMeasurements) => {
 };
 
 /* ═══════════════════════════════════════════════════════
+   3b. MEASUREMENT IMAGE ANALYZER (Computer Vision)
+   POST /api/ai/analyze-measurement-image
+   ═══════════════════════════════════════════════════════ */
+/**
+ * Uses a Vision model to detect landmarks and estimate measurements.
+ * @param {Buffer} imageBuffer - the raw image buffer from multer
+ * @param {string} mimeType - e.g. 'image/jpeg'
+ */
+const analyzeMeasurementImage = async (imageBuffer, mimeType) => {
+    if (!imageBuffer) throw new AppError('Image buffer is required', 400);
+
+    logger.info(`[AI] analyzeMeasurementImage invoked for measuring proportions`);
+
+    const base64Image = imageBuffer.toString('base64');
+    const dataUrl = `data:${mimeType};base64,${base64Image}`;
+
+    const systemPrompt = `You are a highly advanced Body Landmark Detection model. 
+    Your task is to analyze the uploaded full-body image of a person, identify key body proportions (shoulders, chest, waist, hips, legs), and estimate standard tailoring measurements in inches.
+    Assume the person is of average height (around 65 inches or 165 cm) if there is no explicit scale. 
+    Use the pixel proportions and distances between joints to estimate these 6 key measurements accurately.
+    
+    You MUST reply ONLY with a valid JSON object matching this schema exactly, and absolutely no other text:
+    {
+      "chest": number,
+      "waist": number,
+      "hip": number,
+      "shoulder": number,
+      "sleeveLength": number,
+      "inseam": number
+    }`;
+
+    try {
+        const response = await openai.chat.completions.create({
+            model: "gpt-4o",
+            max_tokens: 300,
+            temperature: 0.1,
+            messages: [
+                { role: "system", content: systemPrompt },
+                {
+                    role: "user",
+                    content: [
+                        { type: "text", text: "Please generate the estimated body measurements from this image." },
+                        { type: "image_url", image_url: { url: dataUrl, detail: "high" } }
+                    ]
+                }
+            ]
+        });
+
+        const rawJson = response.choices[0].message.content;
+        return parseJsonResponse(rawJson, 'analyzeMeasurementImage');
+    } catch (err) {
+        logger.error(`[AI] Vision API failed: ${err.message}`);
+        throw new AppError('AI failed to process the image measurements. Please try again.', 500);
+    }
+};
+
+/* ═══════════════════════════════════════════════════════
    4. FASHION SUGGESTIONS (existing feature, improved)
    POST /api/ai/suggestions
    ═══════════════════════════════════════════════════════ */
@@ -234,6 +291,7 @@ module.exports = {
     generateDesign,
     parseOrderDescription,
     predictMeasurements,
+    analyzeMeasurementImage,
     generateSuggestions,
     getUserDesigns,
     deleteDesign,

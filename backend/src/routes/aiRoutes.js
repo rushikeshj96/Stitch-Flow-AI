@@ -2,6 +2,12 @@ const express = require('express');
 const router = express.Router();
 const ctrl = require('../controllers/aiController');
 const { protect } = require('../middleware/authMiddleware');
+const multer = require('multer');
+
+const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
+});
 
 // All AI routes require authentication
 router.use(protect);
@@ -10,6 +16,7 @@ router.use(protect);
 router.post('/design', ctrl.generateDesign);      // POST /api/ai/design
 router.post('/parse-order', ctrl.parseOrder);          // POST /api/ai/parse-order
 router.post('/measurements', ctrl.predictMeasurements); // POST /api/ai/measurements
+router.post('/analyze-measurement-image', upload.single('image'), ctrl.analyzeMeasurementImage); // POST /api/ai/analyze-measurement-image
 router.post('/suggestions', ctrl.getSuggestions);      // POST /api/ai/suggestions
 
 /* ── Saved designs (db) ─────────────────────────── */

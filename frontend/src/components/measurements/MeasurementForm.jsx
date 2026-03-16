@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import MeasurementImageUpload from './MeasurementImageUpload.jsx';
 
 const FIELDS_UPPER = [
     { name: 'chest', label: 'Chest' },
@@ -48,14 +49,25 @@ export default function MeasurementForm({ initial, onSubmit, onCancel, loading }
     const MeasureInput = ({ name, label }) => (
         <div>
             <label className="label text-xs">{label}</label>
-            <input name={name} type="number" step="0.5" min="0"
+            <input name={name} type="text"
                 value={form[name]} onChange={handleChange}
                 className="input text-sm py-2" placeholder="0" />
         </div>
     );
 
+    const handleAnalyzed = (data) => {
+        setForm(f => ({ 
+            ...f, 
+            ...data, 
+            label: 'AI Estimated Measurements', 
+            measurementSource: 'AI_IMAGE' // marks this as AI generated
+        }));
+    };
+
     return (
         <form onSubmit={handleSubmit} className="space-y-5">
+            <MeasurementImageUpload onAnalyzed={handleAnalyzed} />
+
             {/* Label & Unit */}
             <div className="grid grid-cols-2 gap-4">
                 <div>

@@ -38,5 +38,5 @@ exports.update = asyncHandler(async (req, res) => {
  */
 exports.remove = asyncHandler(async (req, res) => {
     await measurementService.remove(req.user._id, req.params.id);
-    res.json({ success: true, message: 'Measurement deleted' });
+    res.json({ success: true, message: 'Record deleted successfully' });
 });

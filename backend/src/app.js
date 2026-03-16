@@ -11,6 +11,12 @@ const orderRoutes = require('./routes/orderRoutes');
 const measurementRoutes = require('./routes/measurementRoutes');
 const aiRoutes = require('./routes/aiRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
+const userRoutes = require('./routes/userRoutes');
+const publicRoutes = require('./routes/publicRoutes');
+const adminBookingRoutes = require('./routes/adminBookingRoutes');
+const productRoutes = require('./routes/productRoutes');
+const storeRoutes = require('./routes/storeRoutes');
 const errorHandler = require('./middleware/errorHandler');
 const notFound = require('./middleware/notFound');
 
@@ -58,6 +64,12 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/measurements', measurementRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/payments', paymentRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/public', publicRoutes);
+app.use('/api/admin/booking', adminBookingRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/store', storeRoutes);
 
 // ─── Error Handling ──────────────────────────────────
 app.use(notFound);

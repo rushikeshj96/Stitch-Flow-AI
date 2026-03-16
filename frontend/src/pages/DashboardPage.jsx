@@ -8,6 +8,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGri
 import StatCard from '../components/common/StatCard.jsx';
 import DeliveryReminderWidget from '../components/common/DeliveryReminderWidget.jsx';
 import Badge from '../components/common/Badge.jsx';
+import PaymentSummaryCards from '../components/payments/PaymentSummaryCards.jsx';
 import { orderService } from '../services/orderService.js';
 import { customerService } from '../services/customerService.js';
 import { formatCurrency, formatDate } from '../utils/helpers.js';
@@ -162,6 +163,9 @@ export default function DashboardPage() {
                     )}
                 </div>
             </div>
+
+            {/* Payment Analytics */}
+            <PaymentSummaryCards />
 
             {/* Delivery Reminder Widget — PRD Feature 7 */}
             <DeliveryReminderWidget />

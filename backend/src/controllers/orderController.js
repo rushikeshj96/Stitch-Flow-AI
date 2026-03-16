@@ -41,11 +41,11 @@ exports.getOrder = asyncHandler(async (req, res) => {
 // @route   POST /api/orders
 // @access  Private
 exports.createOrder = asyncHandler(async (req, res) => {
-    const { totalAmount, advancePaid } = req.body;
-    // BUG-02 fix: Validate advance paid cannot exceed total
-    if (advancePaid && Number(advancePaid) > Number(totalAmount)) {
-        return res.status(400).json({ success: false, message: 'Advance paid cannot exceed total amount' });
-    }
+    const { advancePaid, items } = req.body;
+
+    // We expect the frontend to pass the items at minimum. 
+    // The pre-save hook will calculate subtotal, gstAmount, and totalAmount.
+
     const order = await Order.create({ ...req.body, user: req.user._id });
     // Update customer stats
     await Customer.findByIdAndUpdate(order.customer, { $inc: { totalOrders: 1, totalSpent: order.totalAmount } });
@@ -93,7 +93,7 @@ exports.deleteOrder = asyncHandler(async (req, res) => {
     await Customer.findByIdAndUpdate(order.customer, {
         $inc: { totalOrders: -1, totalSpent: -order.totalAmount },
     });
-    res.json({ success: true, message: 'Order deleted' });
+    res.json({ success: true, message: 'Record deleted successfully' });
 });
 
 // @desc    Get order statistics

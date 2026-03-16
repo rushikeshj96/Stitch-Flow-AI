@@ -188,10 +188,19 @@ async function generateReceipt(orderId, user) {
 
         // Right: Payment breakdown
         const sumX = col2 + 20, sumW = W - sumX - margin;
+
+        // Define rows properly handling GST display mapping
         const rows = [
-            { label: 'Sub Total', value: INR(order.totalAmount), bold: false },
-            { label: 'Advance Paid', value: INR(order.advancePaid), bold: false, color: C.green },
+            { label: 'Sub Total', value: INR(order.subtotal || order.totalAmount), bold: false },
         ];
+
+        if (order.gstAmount > 0) {
+            rows.push({ label: `GST (${(order.gstRate * 100).toFixed(0)}%)`, value: INR(order.gstAmount), bold: false, color: C.muted });
+        }
+
+        rows.push({ label: 'Total Amount', value: INR(order.totalAmount), bold: true });
+        rows.push({ label: 'Advance Paid', value: INR(order.advancePaid), bold: false, color: C.green });
+
         let sumY = qrY + 10;
         rows.forEach(r => {
             doc.font('Helvetica').fontSize(9.5).fillColor(C.muted)

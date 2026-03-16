@@ -5,6 +5,7 @@ import { useAsync } from '../hooks/useAsync.js';
 import { authService } from '../services/authService.js';
 import { getInitials, avatarColor, formatDate } from '../utils/helpers.js';
 import toast from 'react-hot-toast';
+import DeleteAccountSection from '../components/profile/DeleteAccountSection.jsx';
 
 export default function ProfilePage() {
     const { user, logout, updateUser } = useAuth();
@@ -122,18 +123,7 @@ export default function ProfilePage() {
             </form>
 
             {/* Danger Zone */}
-            <div className="card p-5 border border-red-500/20">
-                <h2 className="font-display font-semibold text-red-400 mb-3">Danger Zone</h2>
-                <div className="flex items-center justify-between">
-                    <div>
-                        <p className="text-sm text-slate-300">Sign out of your account</p>
-                        <p className="text-xs text-slate-500 mt-0.5">You will need to sign in again to access the dashboard.</p>
-                    </div>
-                    <button onClick={logout} className="btn-danger gap-2">
-                        <HiOutlineLogout className="w-4 h-4" /> Logout
-                    </button>
-                </div>
-            </div>
+            <DeleteAccountSection />
         </div>
     );
 }

@@ -88,7 +88,12 @@ export default function MeasurementsPage() {
                         <div key={m._id} className="card p-5">
                             <div className="flex items-center justify-between mb-4">
                                 <div>
-                                    <p className="font-semibold text-neutral-700 dark:text-white">{m.label}</p>
+                                    <p className="font-semibold text-neutral-700 dark:text-white flex items-center gap-2">
+                                        {m.label}
+                                        {m.measurementSource === 'AI_IMAGE' && (
+                                            <span className="bg-purple-500/10 text-purple-500 text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">AI Generated</span>
+                                        )}
+                                    </p>
                                     <p className="text-xs text-slate-500 mt-0.5">{m.unit} · {formatDate(m.createdAt)}</p>
                                 </div>
                                 {m.notes && <p className="text-xs text-slate-500 italic max-w-xs text-right">{m.notes}</p>}

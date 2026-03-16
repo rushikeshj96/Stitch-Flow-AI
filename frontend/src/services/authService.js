@@ -9,4 +9,5 @@ export const authService = {
     changePassword: (data) => apiClient.put('/auth/change-password', data),
     forgotPassword: (email) => apiClient.post('/auth/forgot-password', { email }),
     resetPassword: (data) => apiClient.post('/auth/reset-password', data),
+    deleteAccount: () => apiClient.delete('/users/delete-account'),
 };

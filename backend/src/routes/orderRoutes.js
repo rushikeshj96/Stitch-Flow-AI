@@ -7,6 +7,9 @@ const {
 const {
     generateOrderReceipt, sendReceiptViaWhatsApp, markPaymentReceived, getReceiptInfo,
 } = require('../controllers/receiptController');
+const {
+    addPayment, getPayments, deletePayment, sendPaymentReminder,
+} = require('../controllers/paymentController');
 const asyncHandler = require('../utils/asyncHandler');
 const deliveryReminderSvc = require('../services/deliveryReminderService');
 const { generateReceipt } = require('../services/receiptService');
@@ -55,5 +58,10 @@ router.post('/:id/generate-receipt', generateOrderReceipt);
 router.post('/:id/send-receipt', sendReceiptViaWhatsApp);
 router.patch('/:id/mark-paid', markPaymentReceived);
 
-module.exports = router;
+// ── Payment routes ──────────────────────────────────────
+router.get('/:id/payments', getPayments);
+router.post('/:id/payments', addPayment);
+router.delete('/:id/payments/:paymentId', deletePayment);
+router.post('/:id/payment-reminder', sendPaymentReminder);
 
+module.exports = router;

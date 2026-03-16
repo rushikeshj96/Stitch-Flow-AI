@@ -30,5 +30,5 @@ exports.markAllRead = asyncHandler(async (req, res) => {
  */
 exports.remove = asyncHandler(async (req, res) => {
     await notificationService.remove(req.user._id, req.params.id);
-    res.json({ success: true, message: 'Notification deleted' });
+    res.json({ success: true, message: 'Record deleted successfully' });
 });

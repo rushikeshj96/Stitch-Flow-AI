@@ -57,17 +57,19 @@ exports.updateCustomer = asyncHandler(async (req, res) => {
     res.json({ success: true, data: { customer } });
 });
 
-// @desc    Delete (soft-delete) customer
+// @desc    Delete (hard-delete) customer
 // @route   DELETE /api/customers/:id
 // @access  Private
 exports.deleteCustomer = asyncHandler(async (req, res) => {
-    const customer = await Customer.findOneAndUpdate(
-        { _id: req.params.id, user: req.user._id },
-        { isActive: false },
-        { new: true }
-    );
+    const customer = await Customer.findOneAndDelete({ _id: req.params.id, user: req.user._id });
     if (!customer) return res.status(404).json({ success: false, message: 'Customer not found' });
-    res.json({ success: true, message: 'Customer deleted' });
+
+    // Delete associated orders and measurements
+    await Order.deleteMany({ customer: req.params.id, user: req.user._id });
+    const Measurement = require('../models/Measurement');
+    await Measurement.deleteMany({ customer: req.params.id, user: req.user._id });
+
+    res.json({ success: true, message: 'Record deleted successfully' });
 });
 
 // @desc    Search customers by name / phone / email

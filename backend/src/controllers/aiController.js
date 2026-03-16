@@ -72,6 +72,27 @@ exports.predictMeasurements = asyncHandler(async (req, res) => {
 });
 
 /* ═══════════════════════════════════════════════════
+   POST /api/ai/analyze-measurement-image
+   Process a full-body image and estimate measurements
+   ═══════════════════════════════════════════════════ */
+exports.analyzeMeasurementImage = asyncHandler(async (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ success: false, message: 'Image file is required.' });
+    }
+
+    const imageBuffer = req.file.buffer;
+    const mimeType = req.file.mimetype;
+
+    if (!mimeType.startsWith('image/')) {
+        return res.status(400).json({ success: false, message: 'Invalid file format. Must be an image.' });
+    }
+
+    const estimatedMeasurements = await aiService.analyzeMeasurementImage(imageBuffer, mimeType);
+
+    res.json({ success: true, data: estimatedMeasurements });
+});
+
+/* ═══════════════════════════════════════════════════
    POST /api/ai/suggestions
    Get personalised fashion suggestions for a customer
    ═══════════════════════════════════════════════════ */

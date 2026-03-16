@@ -12,17 +12,15 @@ export default function AuthLayout() {
                 <div className="absolute -bottom-24 -right-24 w-80 h-80 bg-purple-600/15 rounded-full blur-3xl pointer-events-none" />
 
                 {/* Brand */}
-                <div className="relative z-10">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center">
-                            <span className="text-white font-bold text-base">SF</span>
-                        </div>
-                        <div>
-                            <p className="text-white font-display font-bold text-lg leading-none">StitchFlow AI</p>
-                            <p className="text-neutral-500 text-xs mt-0.5 uppercase tracking-wider">Boutique Platform</p>
-                        </div>
+                <Link to="/" className="relative z-10 flex items-center gap-3 w-fit group">
+                    <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center group-hover:scale-105 transition-transform shadow-lg shadow-primary-500/20">
+                        <span className="text-white font-bold text-base">SF</span>
                     </div>
-                </div>
+                    <div>
+                        <p className="text-white font-display font-bold text-lg leading-none">StitchFlow AI</p>
+                        <p className="text-neutral-500 text-xs mt-0.5 uppercase tracking-wider">Boutique Platform</p>
+                    </div>
+                </Link>
 
                 {/* Hero copy */}
                 <div className="relative z-10 space-y-6">
@@ -65,12 +63,12 @@ export default function AuthLayout() {
             <div className="flex-1 flex flex-col justify-center items-center px-6 py-10
                       bg-white dark:bg-[rgb(var(--bg))]">
                 {/* Mobile brand */}
-                <div className="flex items-center gap-2.5 mb-10 lg:hidden">
-                    <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center">
+                <Link to="/" className="flex items-center gap-2.5 mb-10 lg:hidden group">
+                    <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center group-hover:scale-105 transition-transform shadow-lg shadow-primary-500/10">
                         <span className="text-white font-bold text-sm">SF</span>
                     </div>
                     <p className="font-display font-bold text-neutral-900 dark:text-white">StitchFlow AI</p>
-                </div>
+                </Link>
 
                 <div className="w-full max-w-[22rem]">
                     <Outlet />

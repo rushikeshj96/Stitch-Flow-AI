@@ -4,6 +4,7 @@ import {
     HiOutlineHome, HiOutlineUsers, HiOutlineShoppingBag,
     HiOutlineScale, HiOutlineBell, HiOutlineSparkles,
     HiOutlineUser, HiOutlineChevronLeft, HiOutlineChevronRight,
+    HiOutlineCalendar, HiOutlineStar, HiOutlineBookOpen
 } from 'react-icons/hi';
 import { useNotifications } from '../../context/NotificationContext.jsx';
 
@@ -13,6 +14,13 @@ const NAV_ITEMS = [
     { to: '/orders', label: 'Orders', icon: HiOutlineShoppingBag },
     { to: '/measurements', label: 'Measurements', icon: HiOutlineScale },
     { to: '/ai-design', label: 'AI Designer', icon: HiOutlineSparkles },
+    // Public Booking Admin
+    { to: '/admin/services', label: 'Public Services', icon: HiOutlineBookOpen },
+    { to: '/admin/products', label: 'Products', icon: HiOutlineShoppingBag },
+    { to: '/admin/store-orders', label: 'Store Orders', icon: HiOutlineShoppingBag },
+    { to: '/admin/appointments', label: 'Appointments', icon: HiOutlineCalendar },
+    { to: '/admin/reviews', label: 'Reviews', icon: HiOutlineStar },
+    // System
     { to: '/notifications', label: 'Notifications', icon: HiOutlineBell, badge: true },
     { to: '/profile', label: 'Profile', icon: HiOutlineUser },
 ];
@@ -35,8 +43,8 @@ export default function Sidebar({ onCollapse }) {
                   ${collapsed ? 'w-[4.5rem]' : 'w-[var(--sidebar-w)]'}`}
         >
             {/* Brand */}
-            <div className={`flex items-center gap-3 h-16 px-4 border-b border-neutral-100 dark:border-white/5 shrink-0 overflow-hidden`}>
-                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center shrink-0">
+            <Link to="/" className="flex items-center gap-3 h-16 px-4 border-b border-neutral-100 dark:border-white/5 shrink-0 overflow-hidden hover:bg-neutral-50 dark:hover:bg-white/5 transition-colors">
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center shrink-0 shadow-lg shadow-primary-500/10">
                     <span className="text-white text-sm font-bold">SF</span>
                 </div>
                 {!collapsed && (
@@ -45,7 +53,7 @@ export default function Sidebar({ onCollapse }) {
                         <p className="text-[10px] text-neutral-400 mt-0.5 uppercase tracking-wider">AI Platform</p>
                     </div>
                 )}
-            </div>
+            </Link>
 
             {/* Nav items */}
             <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">

@@ -24,7 +24,10 @@ export default function OrderForm({ onSubmit, onCancel, loading }) {
     const { query: cSearch, setQuery: setCSearch, results: customers, loading: cLoading } =
         useSearch(q => customerService.search(q).then(r => r.data.data?.customers ?? []), 300);
 
-    const totalAmount = items.reduce((sum, i) => sum + (i.quantity * (parseFloat(i.unitPrice) || 0)), 0);
+    const subtotal = items.reduce((sum, i) => sum + (i.quantity * (parseFloat(i.unitPrice) || 0)), 0);
+    const gstRate = subtotal <= 1000 ? 0.05 : 0.12;
+    const gstAmount = subtotal > 0 ? subtotal * gstRate : 0;
+    const totalAmount = subtotal + gstAmount;
 
     const handleItemChange = (idx, field, value) => {
         setItems(prev => prev.map((it, i) => i === idx ? { ...it, [field]: value } : it));
@@ -44,6 +47,9 @@ export default function OrderForm({ onSubmit, onCancel, loading }) {
         onSubmit({
             customer: customerId,
             items: items.map(it => ({ ...it, quantity: Number(it.quantity), unitPrice: Number(it.unitPrice) })),
+            subtotal,
+            gstRate,
+            gstAmount,
             totalAmount,
             advancePaid: Number(advancePaid) || 0,
             dueDate, priority, notes,
@@ -140,15 +146,27 @@ export default function OrderForm({ onSubmit, onCancel, loading }) {
             </div>
 
             {/* Payment & Dates */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div>
+                    <label className="label">Subtotal</label>
+                    <div className="input bg-surface-card cursor-not-allowed text-stone-300 font-medium whitespace-nowrap overflow-hidden text-ellipsis">
+                        ₹{subtotal.toLocaleString('en-IN')}
+                    </div>
+                </div>
+                <div>
+                    <label className="label">GST ({gstRate * 100}%)</label>
+                    <div className="input bg-surface-card cursor-not-allowed text-stone-300 font-medium whitespace-nowrap overflow-hidden text-ellipsis">
+                        ₹{gstAmount.toLocaleString('en-IN')}
+                    </div>
+                </div>
                 <div>
                     <label className="label">Total Amount</label>
-                    <div className="input bg-surface-card cursor-not-allowed text-white font-semibold">
+                    <div className="input bg-surface-card cursor-not-allowed text-white font-semibold whitespace-nowrap overflow-hidden text-ellipsis">
                         ₹{totalAmount.toLocaleString('en-IN')}
                     </div>
                 </div>
                 <div>
-                    <label className="label">Advance Paid (₹)</label>
+                    <label className="label">Advance(₹)</label>
                     <input type="number" min="0" value={advancePaid}
                         onChange={e => setAdvancePaid(e.target.value)}
                         className="input" placeholder="0" />
@@ -166,7 +184,7 @@ export default function OrderForm({ onSubmit, onCancel, loading }) {
                     <button key={p} type="button"
                         onClick={() => setPriority(p)}
                         className={`flex-1 py-2 rounded-xl text-sm font-medium border transition-all
-                    ${priority === p
+                            ${priority === p
                                 ? p === 'urgent' ? 'bg-red-500/30 border-red-500/50 text-red-300'
                                     : p === 'high' ? 'bg-amber-500/30 border-amber-500/50 text-amber-300'
                                         : 'bg-primary-500/30 border-primary-500/50 text-primary-300'
@@ -198,6 +216,6 @@ export default function OrderForm({ onSubmit, onCancel, loading }) {
                     {loading ? 'Creating…' : 'Create Order'}
                 </button>
             </div>
-        </form>
+        </form >
     );
 }
